@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WB Calculator</title>
+    <!-- Подключаем стили -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Подключаем Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <h1 class="header-title">WB Calculator</h1>
+    </header>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title text-center">WB Calculator</h1>
+                        <!-- Форма для ввода выражения и отправки на сервер -->
+                        <form action="/calculate" method="post" id="calc-form">
+                            <div class="mb-3">
+                                <!-- Поле для ввода выражения -->
+                                <input type="text" name="expression" required class="form-control text-center" id="expression-input">
+                            </div>
+                            <div class="row">
+                                <!-- Кнопки калькулятора -->
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">7</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">8</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">9</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">/</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">4</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">5</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">6</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">*</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">1</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">2</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">3</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">-</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">0</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">.</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">C</button>
+                                </div>
+                                <div class="col-3 mb-2">
+                                    <button type="button" class="btn btn-calculator">+</button>
+                                </div>
+                            </div>
+                            <!-- Кнопка для отправки формы -->
+                            <button type="submit" class="btn btn-primary btn-block btn-calculate">Calculate</button>
+                        </form>
+                        <!-- Отображение результата, если он есть -->
+                        {% if result is not none %}
+                            <h2 class="mt-3 text-center">Result: {{ result }}</h2>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Скрипт для обработки нажатий на кнопки калькулятора -->
+    <script>
+        document.querySelectorAll('.btn-calculator').forEach(button => {
+            button.addEventListener('click', function() {
+                let expressionInput = document.getElementById('expression-input');
+                if (this.innerText === 'C') {
+                    expressionInput.value = '';
+                } else {
+                    expressionInput.value += this.innerText;
+                }
+            });
+        });
+
+        // Скрипт для предотвращения отправки пустой формы
+        document.getElementById('calc-form').addEventListener('submit', function(event) {
+            var input = document.getElementById('expression-input');
+            if (!input.value.trim()) {
+                alert('Expression cannot be empty');
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
